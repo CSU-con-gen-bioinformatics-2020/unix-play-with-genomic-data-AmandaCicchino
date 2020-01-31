@@ -424,8 +424,14 @@ chmod cicch+x count_files.sh
 # Use chmod to change permissions of the files in the `silly` directory to match their names. For example for the first one you would use: `chmod 770 FILE-rwxrwx---`.  Use the octal specifiers to `chmod`. Do this for all 5 files (one chmod command for each), and at the end do `ls -l silly` to verify they are correct.
 
 ```{bash}
-ls silly
+ls-l silly
 
-chmod 771 DIRdrwxrwxr-x
+chmod 775 silly/DIRdrwxrwxr-x
+chmod 640 silly/FILE-rw-r-----
+chmod 664 silly/FILE-rw-rw-r--
+chmod 774 silly/FILE-rwxrwxr--
 
+ls -l silly
+
+#chmod not working for me
 ```

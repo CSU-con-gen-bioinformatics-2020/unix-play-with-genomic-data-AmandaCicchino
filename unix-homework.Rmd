@@ -268,36 +268,41 @@ ls it_aint_here
 ```{bash}
 ls it_aint_here 2> my_bad.txt
 cat my_bad.txt
+rm my_bad.txt
 ```
 
 # The files in `fastq` are text files, but they are all gzipped.  Using `gzcat` and a pipe, view the first 8 lines of `fastq/DPCh_plate1_C11_S35.R1.fq.gz`
 
 ```{bash}
-
+zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz  | head
 ```
 
 # Do the same to see the first 8 lines of `fastq/DPCh_plate1_C11_S35.R2.fq.gz`
 
 ```{bash}
-
+zcat fastq/DPCh_plate1_C11_S35.R2.fq.gz  | head
 ```
 
 # What do you notice about the names of the two reads in each file (Lines 1 and 5, that start with a `@`)
 
 ```
-
+they are the same.
 ```
 
 
 # Print the date, redirect it to a file called `now.txt`, catenate that file to _stdout_ and then remove it
 
 ```{bash}
-
+date > now.txt
+cat now.txt
+rm now.txt
 ```
 
 # Count the number of lines/words/characters (using `wc`) in the two SAM files in the `sam` directory
 
 ```{bash}
+ls sam | wc
+
 
 ```
 
@@ -389,13 +394,13 @@ this file format within a couple of weeks from now.
 # Catenate the file `count_files.sh` to _stdout_
 
 ```{bash}
-
+cat count_files.sh
 ```
 
 # Note that `count_files.sh` is a short shell script. Try to execute it with `./count_files.sh`
 
 ```{bash}
-
+./count_files.sh
 ```
 
 Aha! You should have gotten a permission denied error.  99% of the time that occurs because
@@ -404,7 +409,13 @@ the file is not user-executable.
 # List (long) `count_files.sh` to see what the permissions are, and then add execute (`x`) permissions to users and groups with the "add-or-subtract permissions syntax" of `chmod`, then long list it again
 
 ```{bash}
+#I didnt get that error, even though below it doesnt show an x. I'm not quite sure how to do this properly.
 
+ls -l count_files.sh
+chmod 744 count_files.sh
+#or
+chmod cicch+x count_files.sh
+#?
 ```
 
 
@@ -413,5 +424,8 @@ the file is not user-executable.
 # Use chmod to change permissions of the files in the `silly` directory to match their names. For example for the first one you would use: `chmod 770 FILE-rwxrwx---`.  Use the octal specifiers to `chmod`. Do this for all 5 files (one chmod command for each), and at the end do `ls -l silly` to verify they are correct.
 
 ```{bash}
+ls silly
+
+chmod 771 DIRdrwxrwxr-x
 
 ```

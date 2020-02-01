@@ -115,8 +115,9 @@ ls f TAB d TAB A 0 6 TAB 1 TAB
 
 ```{bash}
 mkdir -p lonely-fastqs/{R1,R2}
+#I don't know why it is saying permission denied. When I run this code in the terminal, it works.
 ```
-*I don't know why it is saying permission denied. When I run this code in the terminal, it works.* 
+
 
 # Copy (not move) all the read1 (`R1`) fastq files in `fastqs` into `lonely-fastqs/R1` and all the read2 fastqs into `lonely-fastqs/R2`. When you are done, on the next line in the code block, list the contents of `lonely-fastqs/R1` and `lonely-fastqs/R2`
 

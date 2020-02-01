@@ -70,6 +70,7 @@ echo "My name is Amanda"
 
 ```{bash}
 pwd
+echo $PATH
 ```
 
 # list, in long format, all the files and directories in this homework directory
@@ -221,14 +222,14 @@ cat bad\ directory\ with\ spaces/bad\ file\ name\ with\ spaces
 
 ```{bash}
 ls -d bad\ directory\ with\ spaces/
-ls -d bad\ nice_dir_name
+ls -d nice_dir_name
 ```
 
 # Once you are convinced that you can list the directories correctly in your terminal, recall that `ls` command and replace `ls` with `rm -r` to remove them
 
 ```{bash}
--r bad\ directory\ with\ spaces/
--r  nice_dir_name/
+rm -r bad\ directory\ with\ spaces/
+rm -r  nice_dir_name/
 
 ```
 
@@ -241,7 +242,7 @@ To make sure that you don't accidentally remove something you don't want to remo
 # If you had just typed `rm -r bad directory name with spaces` what would Unix have tried to remove?
 
 ```
-I'm not sure. 5 directories named each of those words (i.e., "bad", "directory", etc.)?
+5 directories named each of those words (i.e., "bad", "directory", etc.).
 ```
 
 # There are bam, sam, and fastq files, in the appropriately named directories for sample `A05_S5`. Make a directory named `A05_S5` and copy all those files into that new directory.  List the directory when you are done.
@@ -275,19 +276,19 @@ rm my_bad.txt
 # The files in `fastq` are text files, but they are all gzipped.  Using `gzcat` and a pipe, view the first 8 lines of `fastq/DPCh_plate1_C11_S35.R1.fq.gz`
 
 ```{bash}
-zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz  | head
+zcat fastq/DPCh_plate1_C11_S35.R1.fq.gz  | head -n8
 ```
 
 # Do the same to see the first 8 lines of `fastq/DPCh_plate1_C11_S35.R2.fq.gz`
 
 ```{bash}
-zcat fastq/DPCh_plate1_C11_S35.R2.fq.gz  | head
+zcat fastq/DPCh_plate1_C11_S35.R2.fq.gz  | head -n8
 ```
 
 # What do you notice about the names of the two reads in each file (Lines 1 and 5, that start with a `@`)
 
 ```
-they are the same.
+they differ in their last character.
 ```
 
 
@@ -303,37 +304,42 @@ rm now.txt
 
 ```{bash}
 ls sam | wc
-
+wc sam/*
 
 ```
 
 # Note that gzcat will decompress all files you give it and send the output to _stdout_.  Knowing this, count how many lines are in all the `R1` files in `fastq` (after decompressing them into text files), and also count up all the lines in the `R1` files in `fastq`.  Note they should be the same.
 
 ```{bash}
-
+zcat fastq/DPCh_plate1_*R1.fq.gz | wc
 ```
 
 # Now, gzcat all the `R1` files in `fastq` and redirect that to a file called `R1_all_via_gzcat.fq` in the top directory of the repo
 
 ```{bash}
-
+zcat fastq/DPCh_plate1_*R1.fq.gz > R1_all_via_gzcat.fq
 ```
 
 # People are usually familiar with using `cat` to catenate text files.  It turns out that you can also catenate `gzip` compressed files.  The result is another properly gzipped file that can be decompressed.  Catenate all the gzipped `R1` files in `fastq` into a single (still gzipped) file called `R1_all_via_cat.fq.gz`
 
 ```{bash}
+zcat ./fastq/DPCh_plate1_A05_S5.R1.fq.gz | head -n 10
+cat fastq/DPCh_plate1_*R1.fq.gz > R1_all_via_cat.fq.gz
 
+
+#zcat is if you want a read a gzipped file in terminal window
 ```
 
 # Copy `R1_all_via_cat.fq.gz` to `copy_of_R1_all_via_cat.fq.gz`
 
 ```{bash}
-
+cp R1_all_via_cat.fq.gz copy_of_R1_all_via_cat.fq.gz
 ```
 
 # Now, decompress `R1_all_via_cat.fq.gz` into `R1_all_via_cat.fq`
 
 ```{bash}
+gunzip R1_all_via_cat.fq.gz
 
 ```
 
@@ -341,11 +347,15 @@ ls sam | wc
 
 ```{bash}
 
+sha1sum R1_all_via_cat.fq R1_all_via_gzcat.fq
+
 ```
 
 # But now, gzip `R1_all_via_gzcat.fq` and compare the result to `copy_of_R1_all_via_cat.fq.gz` by computing the SHA1 hash of each
 
 ```{bash}
+gzip R1_all_via_gzcat.fq #once you gzip it, it adds .gz
+sha1sum R1_all_via_gzcat.fq.gz copy_of_R1_all_via_cat.fq.gz
 
 ```
 
@@ -355,23 +365,30 @@ Note that this shows that, although the compressed files are not identical, thei
 
 ```{bash}
 
+du -h R1_all_via_cat.fq
+du -h copy_of_R1_all_via_cat.fq.gz
+
 ```
 
 # By what factor (approximately) does the compression save storage space on your disk?
 
 ```
+4
 
 ```
 
 # Remove all files starting with `R1_all` and `copy_of_R1`
 
 ```{bash}
-
+rm R1_all*
+rm copy_of_R1*
 ```
 
 # Now, print the file sizes (with `du -h`, again) of the files in `bam` to the files in `sam`
 
 ```{bash}
+du -h sam
+du -h bam
 
 ```
 
@@ -379,6 +396,8 @@ Note that this shows that, although the compressed files are not identical, thei
 # Print the last 15 lines of `sam/DPCh_plate1_A05_S5.sam` to _stdout_
 
 ```{bash}
+
+tail sam/DPCh_plate1_A05_S5.sam -n15
 
 ```
 
@@ -389,6 +408,8 @@ this file format within a couple of weeks from now.
 # Print the _first_ 15 lines of `sam/DPCh_plate1_A05_S5.sam` to _stdout_
 
 ```{bash}
+
+head sam/DPCh_plate1_A05_S5.sam -n15
 
 ```
 
@@ -430,6 +451,7 @@ ls-l silly
 chmod 775 silly/DIRdrwxrwxr-x
 chmod 640 silly/FILE-rw-r-----
 chmod 664 silly/FILE-rw-rw-r--
+chmod 740 silly/FILE-rwxr-----
 chmod 774 silly/FILE-rwxrwxr--
 
 ls -l silly
